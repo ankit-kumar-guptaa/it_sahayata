@@ -27,6 +27,21 @@ class AuthController extends GetxController {
   }
 
   // Handle login
+  // Future<bool> login(String email, String password) async {
+  //   isLoading.value = true;
+  //   error.value = "";
+  //   final res = await AuthService.login(email, password);
+  //   isLoading.value = false;
+  //   if (res.data != null) {
+  //     user.value = res.data;
+  //     isLoggedIn.value = true;
+  //     return true;
+  //   } else {
+  //     error.value = res.error ?? res.message;
+  //     return false;
+  //   }
+  // }
+
   Future<bool> login(String email, String password) async {
     isLoading.value = true;
     error.value = "";
@@ -37,7 +52,9 @@ class AuthController extends GetxController {
       isLoggedIn.value = true;
       return true;
     } else {
-      error.value = res.error ?? res.message;
+      // FIX: always show a String
+      final errorMsg = (res.error ?? res.message ?? "Login failed").toString();
+      error.value = errorMsg;
       return false;
     }
   }

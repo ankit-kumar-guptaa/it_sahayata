@@ -70,14 +70,12 @@ dependencies:
   # For ticket screenshots
   
   # file_picker: ^6.1.1
-  file_picker: ^5.5.0
   # Pick any file type (PDF, documents)
   # For attaching files in chat
   
   # ============================================
   # VOICE TO TEXT
   # ============================================
-  speech_to_text: ^6.5.1
   # Convert voice to text
   # For ticket description input
   
@@ -102,7 +100,7 @@ dependencies:
   # ============================================
   # NOTIFICATIONS
   # ============================================
-  flutter_local_notifications: ^16.3.0
+  flutter_local_notifications: ^17.0.0
   # Local push notifications
   # Notify when agent replies
   
@@ -155,6 +153,8 @@ dependencies:
   # SMOOTH PAGE INDICATOR
   # ============================================
   smooth_page_indicator: ^1.1.0
+  file_picker: ^10.3.3
+  speech_to_text: ^7.3.0
   # Dots indicator for onboarding
   # Page view indicators
 

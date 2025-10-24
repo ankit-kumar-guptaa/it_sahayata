@@ -5,6 +5,7 @@ import 'package:it_sahayata/screens/auth/register_screen.dart';
 import 'package:it_sahayata/screens/auth/otp_verification_screen.dart';
 import 'package:it_sahayata/screens/customer/customer_home.dart';
 import 'package:it_sahayata/screens/agent/agent_home.dart';
+import '../screens/onboarding_screen.dart';
 
 // ============================================
 // APP ROUTES
@@ -12,6 +13,7 @@ import 'package:it_sahayata/screens/agent/agent_home.dart';
 class AppRoutes {
   // Initial route
   static const String splash = '/';
+  static const String onboarding = '/onboarding';
 
   // Auth routes
   static const String login = '/login';
@@ -47,7 +49,11 @@ class AppRoutes {
       page: () => const SplashScreen(),
       transition: Transition.fade,
     ),
-
+    GetPage(
+      name: onboarding,
+      page: () => const OnboardingScreen(),
+      transition: Transition.rightToLeft,
+    ),
     // Auth pages
     GetPage(
       name: login,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../config/app_config.dart';
 import '../config/theme.dart';
 import '../providers/auth_controller.dart';
@@ -10,21 +11,29 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Auth check on launch (small delay for splash effect)
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 1000), () async {
+      final storage = GetStorage();
+      final onboardingSeen = storage.read('onboarding_seen') == true;
       final authC = Get.find<AuthController>();
+
+      // If user is already logged in
       if (authC.isLoggedIn.isTrue && authC.user.value != null) {
-        // Customer or Agent home screen
         if (authC.user.value!.role == "customer") {
           Get.offAllNamed(AppRoutes.customerHome);
         } else if (authC.user.value!.role == "agent") {
           Get.offAllNamed(AppRoutes.agentHome);
         } else {
-          // Default to login for other roles
           Get.offAllNamed(AppRoutes.login);
         }
-      } else {
+        return;
+      }
+
+      // If onboarding is seen, go to login/register
+      if (onboardingSeen) {
         Get.offAllNamed(AppRoutes.login);
+      } else {
+        // Else, show onboarding
+        Get.offAllNamed(AppRoutes.onboarding);
       }
     });
 
@@ -34,25 +43,17 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              "assets/images/logo.png",
-              height: 120,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              AppConfig.appName,
-              style: AppTextStyles.h2.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              AppConfig.appTagline,
-              style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
-              textAlign: TextAlign.center,
-            ),
+            Image.asset("assets/images/logo.png", height: 120),
+            const SizedBox(height: 20),
+            Text(AppConfig.appName,
+                style: AppTextStyles.h2.copyWith(color: Colors.white)),
+            const SizedBox(height: 8),
+            Text(AppConfig.appTagline,
+                style:
+                    AppTextStyles.bodyMedium.copyWith(color: Colors.white70)),
             const SizedBox(height: 40),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-            ),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.white)),
           ],
         ),
       ),
