@@ -45,7 +45,7 @@ class _ResolutionScreenState extends State<ResolutionScreen> {
                 const SizedBox(height: 22),
                 ElevatedButton.icon(
                   icon: controller.isLoading.value
-                      ? SizedBox(
+                      ? const SizedBox(
                           height: 16,
                           width: 16,
                           child: CircularProgressIndicator(strokeWidth: 2))
@@ -57,12 +57,19 @@ class _ResolutionScreenState extends State<ResolutionScreen> {
                           final ok = await controller.addResolution(
                               ticketId, notesC.text.trim());
                           if (ok) {
-                            Get.snackbar('Done', 'Ticket marked as resolved.');
-                            ticketC.getTickets();
+                            await ticketC.getTickets();
+                            // First pop the resolution screen, then show snackbar with delay!
                             Get.back();
+                            Future.delayed(const Duration(milliseconds: 350),
+                                () {
+                              Get.snackbar('Done', 'Ticket marked as resolved.',
+                                  backgroundColor: Colors.green.shade100,
+                                  colorText: Colors.green.shade900);
+                            });
                           } else {
                             Get.snackbar('Failed', controller.error.value,
-                                backgroundColor: Colors.red.shade100);
+                                backgroundColor: Colors.red.shade100,
+                                colorText: Colors.red.shade900);
                           }
                         },
                 ),

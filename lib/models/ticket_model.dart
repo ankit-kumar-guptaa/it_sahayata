@@ -5,7 +5,7 @@ class TicketModel {
   final String description;
   final String priority;
   final String status;
-  final String? fileUrl;
+  final List<String> fileUrls; // UPDATED TO LIST
   final int? agentId;
   final String? agentName;
   final DateTime createdAt;
@@ -18,7 +18,7 @@ class TicketModel {
     required this.description,
     required this.priority,
     required this.status,
-    this.fileUrl,
+    required this.fileUrls,
     this.agentId,
     this.agentName,
     required this.createdAt,
@@ -26,20 +26,25 @@ class TicketModel {
   });
 
   factory TicketModel.fromJson(Map<String, dynamic> json) => TicketModel(
-        id: int.parse(json['id'].toString()),
-        customerId: int.parse(json['customer_id'].toString()),
-        category: json['category'],
-        description: json['description'],
-        priority: json['priority'],
-        status: json['status'],
-        fileUrl: json['file_url'],
+        id: int.tryParse(json['id'].toString()) ?? 0,
+        customerId: int.tryParse(json['customer_id'].toString()) ?? 0,
+        category: json['category'] ?? '',
+        description: json['description'] ?? '',
+        priority: json['priority'] ?? '',
+        status: json['status'] ?? '',
+        fileUrls: (json['file_urls'] != null && json['file_urls'] != '')
+            ? (json['file_urls'] is List
+                ? List<String>.from(json['file_urls'])
+                : json['file_urls'].toString().split(','))
+            : [],
         agentId: json['agent_id'] != null
             ? int.tryParse(json['agent_id'].toString())
             : null,
         agentName: json['agent_name'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt:
+            DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now(),
         updatedAt: json['updated_at'] != null
-            ? DateTime.tryParse(json['updated_at'])
+            ? DateTime.tryParse(json['updated_at'].toString())
             : null,
       );
 
@@ -50,7 +55,7 @@ class TicketModel {
         'description': description,
         'priority': priority,
         'status': status,
-        'file_url': fileUrl,
+        'file_urls': fileUrls.join(','), // If string needed by API
         'agent_id': agentId,
         'agent_name': agentName,
         'created_at': createdAt.toIso8601String(),

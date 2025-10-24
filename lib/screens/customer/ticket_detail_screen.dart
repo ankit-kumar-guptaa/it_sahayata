@@ -19,11 +19,18 @@ class TicketDetailScreen extends StatelessWidget {
       body: FutureBuilder(
         future: ticketC.getTicketDetail(ticketId),
         builder: (context, snap) {
-          final t = ticketC.selectedTicket.value;
+          // Temporary loading or error state
           if (ticketC.detailLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (t == null) return const Center(child: Text("No data found"));
+          // Defensive: after builder, not found or error
+          final t = ticketC.selectedTicket.value;
+          if (t == null) {
+            return Center(
+                child: Text(ticketC.error.value.isNotEmpty
+                    ? "Error: ${ticketC.error.value}"
+                    : "No data found"));
+          }
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -48,7 +55,7 @@ class TicketDetailScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 15)),
                   ],
                 ),
-                if (t.agentName != null) ...[
+                if (t.agentName != null && t.agentName!.isNotEmpty) ...[
                   const SizedBox(height: 10),
                   Row(
                     children: [
@@ -57,7 +64,32 @@ class TicketDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ],
+                // Show IMAGES
+                if (t.fileUrls.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  const Text("Attached Images:"),
+                  SizedBox(
+                    height: 90,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: t.fileUrls.length,
+                      separatorBuilder: (c, i) => const SizedBox(width: 10),
+                      itemBuilder: (c, i) => ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          t.fileUrls[i],
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              const Icon(Icons.broken_image),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 18),
+
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart'; // <-- ADD THIS!
 import '../config/app_config.dart';
 
 class ApiService {
@@ -20,7 +21,9 @@ class ApiService {
         .post(
           Uri.parse(url),
           headers: finalHeaders,
-          body: jsonEncode(body),
+          body: (finalHeaders['Content-Type'] == 'application/json')
+              ? jsonEncode(body)
+              : body, // Handles form-data for file uploads etc.
         )
         .timeout(AppConfig.timeoutDuration);
   }
@@ -61,18 +64,19 @@ class ApiService {
     return await request.send();
   }
 
-  // Helper to attach token if exists
+  // THIS IS THE FIXED PART: always ATTACH TOKEN from GetStorage
   static Future<Map<String, String>> _addAuthHeader(
       Map<String, String>? headers) async {
     Map<String, String> head = {
       'Content-Type': 'application/json',
       ...?headers,
     };
-    // Token storage logic - update as per your storage
-    // Example (with GetStorage):
-    // String? token = GetStorage().read(AppConfig.tokenKey);
-    // if (token?.isNotEmpty ?? false) head['Authorization'] = 'Bearer $token';
-
+    // The fixed, production code:
+    final box = GetStorage();
+    var token = box.read(AppConfig.tokenKey);
+    if (token != null && token.toString().isNotEmpty) {
+      head['Authorization'] = 'Bearer $token';
+    }
     return head;
   }
 }

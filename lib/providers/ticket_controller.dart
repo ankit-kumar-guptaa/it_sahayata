@@ -34,6 +34,7 @@ class TicketController extends GetxController {
   Future<void> getTicketDetail(int ticketId) async {
     detailLoading.value = true;
     error.value = "";
+    selectedTicket.value = null; // always reset before fetching
     final res = await TicketService.getTicketDetail(ticketId);
     detailLoading.value = false;
     if (res.data != null) {
@@ -43,17 +44,20 @@ class TicketController extends GetxController {
     }
   }
 
-  // Create new ticket
+  // Create new ticket - now supports attaching multiple images!
   Future<bool> createTicket(
-      String category, String description, String priority,
-      [String? fileUrl]) async {
+    String category,
+    String description,
+    String priority, [
+    List<String>? fileUrls, // <-- NOTE: now fileUrls list
+  ]) async {
     isLoading.value = true;
     error.value = "";
     final res = await TicketService.createTicket(
       category: category,
       description: description,
       priority: priority,
-      fileUrl: fileUrl,
+      fileUrls: fileUrls,
     );
     isLoading.value = false;
     if (res.data != null) {

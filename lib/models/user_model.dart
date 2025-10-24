@@ -20,14 +20,15 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: int.parse(json['id'].toString()),
-        name: json['name'] ?? '',
-        email: json['email'] ?? '',
-        phone: json['phone'] ?? '',
-        avatarUrl: json['avatar_url'],
-        role: json['role'] ?? 'customer',
+        id: int.tryParse(json['id'].toString()) ?? 0,
+        name: json['name']?.toString() ?? '',
+        email: json['email']?.toString() ?? '',
+        phone: json['phone']?.toString() ?? '',
+        avatarUrl: json['avatar_url']?.toString(),
+        role: json['role']?.toString() ?? 'customer',
         isVerified: json['is_verified'].toString() == '1',
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ??
+            DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {

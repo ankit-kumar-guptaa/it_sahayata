@@ -18,13 +18,20 @@ class TicketDetailAgent extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Ticket Details (Agent)")),
       body: FutureBuilder(
+        // IMPORTANT: Always pass ticketId for latest data
         future: ticketC.getTicketDetail(ticketId),
         builder: (context, snap) {
           final t = ticketC.selectedTicket.value;
           if (ticketC.detailLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (t == null) return const Center(child: Text("No data found"));
+          if (t == null) {
+            return Center(
+              child: Text(ticketC.error.value.isNotEmpty
+                  ? "Error: ${ticketC.error.value}"
+                  : "No data found"),
+            );
+          }
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -44,10 +51,38 @@ class TicketDetailAgent extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text("Category: ${t.category}"),
                 const SizedBox(height: 10),
-                Text("Customer: ${t.customerId}"),
+                Text("Customer: #${t.customerId}"),
                 const SizedBox(height: 10),
                 Text("Created: ${t.createdAt}"),
+
+                // Show attached images if any
+                if (t.fileUrls.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  const Text("Attachments:"),
+                  SizedBox(
+                    height: 90,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: t.fileUrls.length,
+                      separatorBuilder: (c, i) => const SizedBox(width: 10),
+                      itemBuilder: (c, i) => ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          t.fileUrls[i],
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              const Icon(Icons.broken_image),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+
                 const Divider(height: 30),
+
+                // CHAT BUTTON for agent
                 ElevatedButton.icon(
                   icon: const Icon(Icons.chat),
                   label: const Text("Chat With Customer"),
@@ -59,8 +94,8 @@ class TicketDetailAgent extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.edit, color: Colors.deepOrange),
-                      label: Text("Mark as Resolved"),
-                      onPressed: () => Get.to(() => ResolutionScreen(),
+                      label: const Text("Mark as Resolved"),
+                      onPressed: () => Get.to(() => const ResolutionScreen(),
                           arguments: {'ticket_id': ticketId}),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green),

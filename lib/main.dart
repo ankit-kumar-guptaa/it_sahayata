@@ -6,6 +6,7 @@ import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/routes.dart';
 import 'providers/auth_controller.dart';
+import 'providers/ticket_controller.dart'; // <-- add this import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +26,9 @@ void main() async {
     ),
   );
 
-  // Inject AuthController once here globally
+  // Inject both controllers globally ONCE (main fix)
   Get.put(AuthController(), permanent: true);
+  Get.put(TicketController(), permanent: true); // ADD THIS LINE!
 
   runApp(const ITSahayataApp());
 }

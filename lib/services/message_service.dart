@@ -18,7 +18,7 @@ class MessageService {
         body: {
           "ticket_id": ticketId,
           "message": message,
-          if (fileUrl != null) "file_url": fileUrl,
+          if (fileUrl != null && fileUrl.isNotEmpty) "file_url": fileUrl,
         },
       );
       final json = jsonDecode(res.body);
@@ -56,13 +56,11 @@ class MessageService {
     String type = "chat",
   }) async {
     try {
-      // Send multipart/form-data request
       final resp = await ApiService.uploadFile(
         AppConfig.uploadFileEndpoint,
         filePath: filePath,
         fields: {'type': type},
       );
-
       final res = await http.Response.fromStream(resp);
       final json = jsonDecode(res.body);
       if (res.statusCode == 200 && json['data']?['file_url'] != null) {

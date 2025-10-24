@@ -6,8 +6,10 @@ class MessageController extends GetxController {
   var isLoading = false.obs;
   var messages = <MessageModel>[].obs;
   var error = "".obs;
-
   int? _currentTicketId;
+
+  // For optimistic UI
+  bool isSending = false;
 
   // Get all messages for ticket
   Future<void> getMessages(int ticketId) async {
@@ -23,16 +25,16 @@ class MessageController extends GetxController {
     }
   }
 
-  // Send new message
+  // Send new message (text and/or file)
   Future<bool> sendMessage(String message, {String? fileUrl}) async {
     if (_currentTicketId == null) return false;
-    isLoading.value = true;
+    isSending = true;
     final res = await MessageService.sendMessage(
       ticketId: _currentTicketId!,
       message: message,
       fileUrl: fileUrl,
     );
-    isLoading.value = false;
+    isSending = false;
     if (res.data != null) {
       messages.add(res.data!);
       return true;
@@ -42,7 +44,7 @@ class MessageController extends GetxController {
     }
   }
 
-  // Upload attachment
+  // Upload attachment (image/pdf etc.)
   Future<String?> uploadFile(String path) async {
     isLoading.value = true;
     final res = await MessageService.uploadFile(path);

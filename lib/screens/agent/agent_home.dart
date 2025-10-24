@@ -4,6 +4,7 @@ import '../../providers/ticket_controller.dart';
 import '../../providers/auth_controller.dart';
 import 'assigned_tickets_screen.dart';
 import '../../screens/common/settings_screen.dart';
+import '../../config/routes.dart';
 
 class AgentHome extends StatelessWidget {
   const AgentHome({Key? key}) : super(key: key);
@@ -11,9 +12,9 @@ class AgentHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authC = Get.find<AuthController>();
-    final ticketC = Get.put(TicketController());
+    final ticketC = Get.find<
+        TicketController>(); // <== Use Get.find to avoid double instantiation
 
-    // Only show agent's assigned tickets & stats
     return Scaffold(
       appBar: AppBar(
         title: const Text("Agent Dashboard"),
@@ -73,15 +74,20 @@ class AgentHome extends StatelessWidget {
                 Text("High Priority",
                     style: const TextStyle(fontWeight: FontWeight.bold)),
                 ...ticketC.tickets
-                    .where((t) => t.priority == "high")
+                    .where((t) => t.priority.toLowerCase() == "high")
                     .take(2)
                     .map((t) => ListTile(
                           leading: const Icon(Icons.bolt, color: Colors.red),
                           title: Text('Ticket #${t.id}: ${t.category}'),
-                          subtitle: Text(t.description,
-                              maxLines: 1, overflow: TextOverflow.ellipsis),
-                          onTap: () => Get.toNamed('/ticket-detail-agent',
-                              arguments: {'ticket_id': t.id}),
+                          subtitle: Text(
+                            t.description,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () => Get.toNamed(
+                            AppRoutes.ticketDetailAgent,
+                            arguments: {'ticket_id': t.id},
+                          ),
                         ))
                     .toList(),
               ],

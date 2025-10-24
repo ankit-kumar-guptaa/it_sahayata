@@ -7,11 +7,36 @@ import 'api_service.dart';
 
 class TicketService {
   // Create Ticket (Customer)
+  // static Future<ApiResponse<TicketModel?>> createTicket({
+  //   required String category,
+  //   required String description,
+  //   required String priority,
+  //   String? fileUrl,
+  // }) async {
+  //   try {
+  //     final res = await ApiService.postRequest(
+  //       AppConfig.createTicketEndpoint,
+  //       body: {
+  //         "category": category,
+  //         "description": description,
+  //         "priority": priority,
+  //         if (fileUrl != null) "file_url": fileUrl,
+  //       },
+  //     );
+  //     final json = jsonDecode(res.body);
+  //     return ApiResponse<TicketModel?>.fromJson(
+  //         json, (data) => data == null ? null : TicketModel.fromJson(data));
+  //   } catch (e) {
+  //     return ApiResponse<TicketModel?>(
+  //         status: 500, message: "Network Error", error: e.toString());
+  //   }
+  // }
+
   static Future<ApiResponse<TicketModel?>> createTicket({
     required String category,
     required String description,
     required String priority,
-    String? fileUrl,
+    List<String>? fileUrls, // NOTE!
   }) async {
     try {
       final res = await ApiService.postRequest(
@@ -20,12 +45,15 @@ class TicketService {
           "category": category,
           "description": description,
           "priority": priority,
-          if (fileUrl != null) "file_url": fileUrl,
+          if (fileUrls != null && fileUrls.isNotEmpty)
+            "file_urls": fileUrls.join(','),
         },
       );
       final json = jsonDecode(res.body);
       return ApiResponse<TicketModel?>.fromJson(
-          json, (data) => data == null ? null : TicketModel.fromJson(data));
+        json,
+        (data) => data == null ? null : TicketModel.fromJson(data),
+      );
     } catch (e) {
       return ApiResponse<TicketModel?>(
           status: 500, message: "Network Error", error: e.toString());

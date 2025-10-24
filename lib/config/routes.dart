@@ -4,7 +4,9 @@ import 'package:it_sahayata/screens/auth/login_screen.dart';
 import 'package:it_sahayata/screens/auth/register_screen.dart';
 import 'package:it_sahayata/screens/auth/otp_verification_screen.dart';
 import 'package:it_sahayata/screens/customer/customer_home.dart';
+import 'package:it_sahayata/screens/customer/ticket_detail_screen.dart';
 import 'package:it_sahayata/screens/agent/agent_home.dart';
+import '../screens/agent/ticket_detail_agent.dart';
 import '../screens/onboarding_screen.dart';
 
 // ============================================
@@ -32,8 +34,9 @@ class AppRoutes {
   static const String agentHome = '/agent-home';
   static const String assignedTickets = '/assigned-tickets';
   static const String ticketDetailAgent = '/ticket-detail-agent';
-  static const String resolution = '/resolution';
 
+  static const String resolution = '/resolution';
+  //  static const String ticketDetailAgent = '/ticket-detail-agent';
   // Common routes
   static const String settings = '/settings';
   static const String notifications = '/notifications';
@@ -60,7 +63,11 @@ class AppRoutes {
       page: () => const LoginScreen(),
       transition: Transition.rightToLeft,
     ),
-
+    GetPage(
+      name: '/ticket-detail',
+      page: () => const TicketDetailScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
       name: register,
       page: () => const RegisterScreen(),
@@ -72,7 +79,11 @@ class AppRoutes {
       page: () => const OtpVerificationScreen(),
       transition: Transition.rightToLeft,
     ),
-
+    GetPage(
+      name: ticketDetailAgent,
+      page: () => const TicketDetailAgent(),
+      transition: Transition.rightToLeft,
+    ),
     // Customer pages
     GetPage(
       name: customerHome,
