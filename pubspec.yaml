@@ -1,0 +1,190 @@
+name: it_sahayata
+description: IT Support Ticket Management App - Instant Tech Support
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # ============================================
+  # STATE MANAGEMENT
+  # ============================================
+  get: ^4.6.6
+  # GetX - State management, routing, dependency injection
+  # Easy state management without boilerplate code
+  
+  # ============================================
+  # HTTP & API CALLS
+  # ============================================
+  http: ^1.1.0
+  # HTTP client for making REST API calls
+  # Simple GET, POST, PUT, DELETE requests
+  
+  dio: ^5.4.0
+  # Advanced HTTP client with interceptors
+  # Better error handling, file upload support
+  
+  # ============================================
+  # LOCAL STORAGE
+  # ============================================
+  shared_preferences: ^2.2.2
+  # Store JWT token, user data locally
+  # Persistent key-value storage
+  
+  get_storage: ^2.1.1
+  # Fast, lightweight local storage by GetX
+  # Alternative to SharedPreferences
+  
+  # ============================================
+  # UI COMPONENTS & ANIMATIONS
+  # ============================================
+  flutter_spinkit: ^5.2.0
+  # Beautiful loading spinners
+  # Multiple animation styles
+  
+  shimmer: ^3.0.0
+  # Skeleton loading effect
+  # Shows placeholder while data loads
+  
+  lottie: ^2.7.0
+  # JSON-based animations
+  # Smooth, scalable animations
+  
+  animated_text_kit: ^4.2.2
+  # Cool text animations
+  # Typewriter, fade, rotate effects
+  
+  # ============================================
+  # IMAGE & FILE HANDLING
+  # ============================================
+  cached_network_image: ^3.3.0
+  # Cache images from network
+  # Faster loading, reduces bandwidth
+  
+  image_picker: ^1.0.5
+  # Pick images from gallery or camera
+  # For ticket screenshots
+  
+  # file_picker: ^6.1.1
+  file_picker: ^5.5.0
+  # Pick any file type (PDF, documents)
+  # For attaching files in chat
+  
+  # ============================================
+  # VOICE TO TEXT
+  # ============================================
+  speech_to_text: ^6.5.1
+  # Convert voice to text
+  # For ticket description input
+  
+  # ============================================
+  # DATE & TIME FORMATTING
+  # ============================================
+  intl: ^0.18.1
+  # Date formatting, localization
+  # Format: "24 Oct 2025, 11:30 AM"
+  
+  timeago: ^3.6.0
+  # Relative time formatting
+  # Shows "2 hours ago", "just now"
+  
+  # ============================================
+  # CONNECTIVITY & NETWORK
+  # ============================================
+  connectivity_plus: ^5.0.2
+  # Check internet connection
+  # Show offline message if no network
+  
+  # ============================================
+  # NOTIFICATIONS
+  # ============================================
+  flutter_local_notifications: ^16.3.0
+  # Local push notifications
+  # Notify when agent replies
+  
+  # ============================================
+  # REFRESH & PULL TO REFRESH
+  # ============================================
+  pull_to_refresh: ^2.0.0
+  # Pull down to refresh lists
+  # Ticket list, message list refresh
+  
+  # ============================================
+  # TOAST & SNACKBAR MESSAGES
+  # ============================================
+  fluttertoast: ^8.2.4
+  # Show toast messages
+  # Success, error, info messages
+  
+  # ============================================
+  # ICONS
+  # ============================================
+  font_awesome_flutter: ^10.6.0
+  # Extra icon pack
+  # More icon options than default
+  
+  cupertino_icons: ^1.0.6
+  # iOS style icons
+  
+  # ============================================
+  # URL LAUNCHER
+  # ============================================
+  url_launcher: ^6.2.2
+  # Open URLs, make phone calls
+  # For help section links
+  
+  # ============================================
+  # PERMISSION HANDLER
+  # ============================================
+  permission_handler: ^11.1.0
+  # Request camera, storage permissions
+  # For image picker, file picker
+  
+  # ============================================
+  # BADGES & INDICATORS
+  # ============================================
+  badges: ^3.1.2
+  # Show badge count on icons
+  # Unread message count
+  
+  # ============================================
+  # SMOOTH PAGE INDICATOR
+  # ============================================
+  smooth_page_indicator: ^1.1.0
+  # Dots indicator for onboarding
+  # Page view indicators
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # ============================================
+  # ASSETS
+  # ============================================
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+  
+  # ============================================
+  # FONTS
+  # ============================================
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
