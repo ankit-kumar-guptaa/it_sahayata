@@ -153,16 +153,23 @@ dependencies:
   # SMOOTH PAGE INDICATOR
   # ============================================
   smooth_page_indicator: ^1.1.0
-  file_picker: ^10.3.3
   speech_to_text: ^7.3.0
+  file_picker: ^10.3.3
   # Dots indicator for onboarding
   # Page view indicators
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+
 
 flutter:
   uses-material-design: true
@@ -171,7 +178,7 @@ flutter:
   # ASSETS
   # ============================================
   assets:
-    - assets/images/
+    - assets/logo.png
     - assets/icons/
     - assets/animations/
   

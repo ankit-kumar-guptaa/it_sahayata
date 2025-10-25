@@ -22,16 +22,25 @@ class MessageModel {
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
-        id: int.parse(json['id'].toString()),
-        ticketId: int.parse(json['ticket_id'].toString()),
-        senderId: int.parse(json['sender_id'].toString()),
-        message: json['message'] ?? '',
-        fileUrl: json['file_url'],
-        isRead: json['is_read'].toString() == '1',
-        senderName: json['sender_name'] ?? '',
-        senderRole: json['sender_role'] ?? '',
-        timestamp: DateTime.parse(json['timestamp']),
+        id: _parseInt(json['id']),
+        ticketId: _parseInt(json['ticket_id']),
+        senderId: _parseInt(json['sender_id']),
+        message: json['message']?.toString() ?? '',
+        fileUrl: json['file_url']?.toString(),
+        isRead: json['is_read'].toString() == '1' || json['is_read'] == true,
+        senderName: json['sender_name']?.toString() ?? '',
+        senderRole: json['sender_role']?.toString() ?? '',
+        timestamp: DateTime.parse(json['timestamp']?.toString() ?? DateTime.now().toIso8601String()),
       );
+
+  static int _parseInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is String && value.isNotEmpty) {
+      return int.tryParse(value) ?? 0;
+    }
+    return 0;
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,

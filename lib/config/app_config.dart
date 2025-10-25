@@ -4,7 +4,7 @@ class AppConfig {
   // ============================================
   // Local development ke liye
   static const String baseUrl =
-      'https://apis.itsahayata.com/'; // Android Emulator
+      'https://apis.itsahayata.com'; // Android Emulator
   // static const String baseUrl = 'http://localhost/it-sahayata-api'; // iOS Simulator
   // static const String baseUrl = 'http://192.168.1.100/it-sahayata-api'; // Real device (apna IP daal)
 

@@ -63,16 +63,28 @@ class MessageService {
       );
       final res = await http.Response.fromStream(resp);
       final json = jsonDecode(res.body);
-      if (res.statusCode == 200 && json['data']?['file_url'] != null) {
-        return ApiResponse<String?>.fromJson(json, (data) => data['file_url']);
+      
+      if (res.statusCode == 200) {
+        // Handle different response formats
+        final fileUrl = json['data']?['file_url'] ?? json['file_url'];
+        if (fileUrl != null && fileUrl is String) {
+          return ApiResponse<String?>(
+            status: 200,
+            message: json['message'] ?? 'File uploaded successfully',
+            data: fileUrl,
+          );
+        }
       }
+      
       return ApiResponse<String?>(
           status: res.statusCode,
-          message: json['message'],
-          error: json['error']);
+          message: json['message'] ?? 'Upload failed',
+          error: json['error'] ?? 'Unknown error');
     } catch (e) {
       return ApiResponse<String?>(
-          status: 500, message: "Network Error", error: e.toString());
+          status: 500, 
+          message: "Network Error", 
+          error: e.toString());
     }
   }
 }

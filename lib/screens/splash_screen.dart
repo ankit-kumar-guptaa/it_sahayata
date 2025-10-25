@@ -43,7 +43,7 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset("assets/images/logo.png", height: 120),
+            Image.asset("assets/logo.png", height: 120),
             const SizedBox(height: 20),
             Text(AppConfig.appName,
                 style: AppTextStyles.h2.copyWith(color: Colors.white)),
