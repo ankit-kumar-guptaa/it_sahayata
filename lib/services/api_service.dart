@@ -57,11 +57,33 @@ class ApiService {
       Map<String, String>? headers,
       Map<String, String>? fields}) async {
     var request = http.MultipartRequest('POST', Uri.parse(url));
-    final file = await http.MultipartFile.fromPath(fieldName, filePath);
+    
+    // Add the file with the correct field name 'file' as expected by PHP API
+    final file = await http.MultipartFile.fromPath('file', filePath);
     request.files.add(file);
-    request.headers.addAll(await _addAuthHeader(headers));
+    
+    // For file uploads, we need to use the auth header without setting Content-Type
+    // as multipart requests set their own content type with boundary
+    var authHeaders = await _getAuthHeadersWithoutContentType(headers);
+    request.headers.addAll(authHeaders);
+    
+    // Add any additional fields (like 'type' parameter)
     if (fields != null) request.fields.addAll(fields);
+    
     return await request.send();
+  }
+
+  // Get auth headers without Content-Type for multipart requests
+  static Future<Map<String, String>> _getAuthHeadersWithoutContentType(
+      Map<String, String>? headers) async {
+    Map<String, String> head = {...?headers};
+    // Get token from storage
+    final box = GetStorage();
+    var token = box.read(AppConfig.tokenKey);
+    if (token != null && token.toString().isNotEmpty) {
+      head['Authorization'] = 'Bearer $token';
+    }
+    return head;
   }
 
   // THIS IS THE FIXED PART: always ATTACH TOKEN from GetStorage

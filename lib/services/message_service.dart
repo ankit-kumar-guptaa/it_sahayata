@@ -62,7 +62,13 @@ class MessageService {
         fields: {'type': type},
       );
       final res = await http.Response.fromStream(resp);
-      final json = jsonDecode(res.body);
+      final responseBody = res.body;
+      
+      // Debug logging
+      print('File upload response status: ${res.statusCode}');
+      print('File upload response body: $responseBody');
+      
+      final json = jsonDecode(responseBody);
       
       if (res.statusCode == 200) {
         // Handle different response formats
@@ -81,6 +87,7 @@ class MessageService {
           message: json['message'] ?? 'Upload failed',
           error: json['error'] ?? 'Unknown error');
     } catch (e) {
+      print('File upload error: $e');
       return ApiResponse<String?>(
           status: 500, 
           message: "Network Error", 
